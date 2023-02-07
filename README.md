@@ -12,6 +12,6 @@ _italics_ __bold_
 - line 1 
 - line 2
 
-[Kawasaki](https://www.Kawasaki.cz)
+[Kawasaki](https://www.kawasaki.com)
 
 [I'm an inline-style link](https://www.google.com)
