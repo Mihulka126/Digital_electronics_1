@@ -1,35 +1,53 @@
-!Build/
-.last_cover_stats
-/META.yml
-/META.json
-/MYMETA.*
-*.o
-*.pm.tdy
-*.bs
+#########################################################################################
+##  Project    : Collect of various scripts for working with EDA-tools (ASIC/FPGA/etc) ##
+##  Designer   : Dmitry Murzinov (kakstattakim@gmail.com)                              ##
+##  Link       : https://github.com/iDoka/eda-scripts                                  ##
+##  Description: .gitignore                                                            ##
+##  Usage      : just rename or add contain to .gitignore                              ##
+##  License    : MIT                                                                   ##
+#########################################################################################
 
-# Devel::Cover
-cover_db/
+## log files
+*.log
+*.rpt
 
-# Devel::NYTProf
-nytprof.out
+## bitstream
+*.bit
 
-# Dizt::Zilla
-/.build/
+## netlist
+*.edf
+*.edif
+*.vn
 
-# Module::Build
-_build/
-Build
-Build.bat
+## SDF
+*.sdf
 
-# Module::Install
-inc/
+###### for Xilinx Vivado|ISE
+.Xil/
+.hbs/
+.cache/
+xsim.dir/
 
-# ExtUtils::MakeMaker
-/blib/
-/_eumm/
-/*.gz
-/Makefile
-/Makefile.old
-/MANIFEST.bak
-/pm_to_blib
-/*.zip
+worklib.tb.wdb
+fsm_encoding.os
+tab_*/
+webtalk.jou
+webtalk.log
+webtalk_*.jou
+webtalk_*.log
+vivado.jou
+vivado.log
+vivado_pid*.str
+hs_err_pid*
+xelab.*
+xsim.*
+xvlog.*
+*.cache
+*.sim
+*.runs
+*.hw
+*.backup.*
+*.debug
+
+
+unisims
