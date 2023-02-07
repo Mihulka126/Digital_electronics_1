@@ -1,4 +1,4 @@
-# Lab 1: INSERT_YOUR_FIRSTNAME INSERT_YOUR_LASTNAME
+# Lab 1: Martin Mihulka (231676)
 
 ### De Morgan's laws
 
@@ -12,8 +12,8 @@
 architecture dataflow of gates is
 begin
     f_orig_o <= (not(b_i) and a_i) or (c_i and not(b_i or not(a_i)));
-    f_nand_o <= b_i nand a_i; -- MODIFY THIS FUNCTION
-    f_nor_o  <= b_i nor a_i;  -- MODIFY THIS FUNCTION
+    f_nand_o <= (not(not(not(b_i) and a_i) and not((c_i and (not(b_i) and a_i)))));
+    f_nor_o  <= (not(b_i or not(a_i)) or not(not(c_i) or b_i or not(a_i)));
 end architecture dataflow;
 ```
 
@@ -34,8 +34,8 @@ end architecture dataflow;
 
 1. Screenshot with simulated time waveforms. Always display all inputs and outputs (display the inputs at the top of the image, the outputs below them) at the appropriate time scale!
 
-   ![your figure]()
+   ![Distributive laws waveforms](images/distributive_waveforms.png)
 
 2. Link to your public EDA Playground example:
 
-   [https://www.edaplayground.com/...](https://www.edaplayground.com/...)
+   [https://www.edaplayground.com/x/ZZtW](https://www.edaplayground.com/x/ZZtW)
