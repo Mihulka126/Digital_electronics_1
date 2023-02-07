@@ -1,9 +1,13 @@
 # Digital_electronics_1
 
-1. First ordered list item
-2. Another item
-⋅⋅* Unordered sub-list. 
-1. Actual numbers don't matter, just that it's a number
-⋅⋅1. Ordered sub-list
-4. And another item.
+# H1
+## H2
+### H3
 
+_italics_ __bold_
+
+1. first line
+2. second line
+
+- line 1 
+- line 2
