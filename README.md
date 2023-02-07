@@ -13,3 +13,5 @@ _italics_ __bold_
 - line 2
 
 [Kawasaki](https://www.Kawasaki.cz)
+
+[I'm an inline-style link](https://www.google.com)
