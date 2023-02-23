@@ -52,14 +52,42 @@ begin
     begin
         -- Report a note at the beginning of stimulus process
         report "Stimulus process started" severity note;
-
+        
         -- First test case
-
+        s_a <= "111";
+        s_b <= "101";
+        s_c <= "010";
+        s_d <= "000";
+        s_sel <= "10";
+        wait for 100 ns;
+        -- Expected output
+        assert (s_f_o = "010")
         -- If false, then report an error
-
-        -- Report a note at the end of stimulus process
-        report "Stimulus process finished" severity note;
-        wait;
+        report "Output is not correct" severity error;
+        
+        s_sel <= "01";
+        wait for 100 ns;
+        -- Expected output
+        assert (s_f_o = "101")
+        -- If false, then report an error
+        report "Output is not correct" severity error;
+        
+        s_sel <= "11";
+        wait for 100 ns;
+        -- Expected output
+        assert (s_f_o = "000")
+        -- If false, then report an error
+        report "Output is not correct" severity error;
+        
+        s_sel <= "00";
+        wait for 100 ns;
+        -- Expected output
+        assert (s_f_o = "111")
+        -- If false, then report an error
+        report "Output is not correct" severity error;
+        
+        report "Stimulus process finished";
+        wait; -- Data generation process is suspended forever
     end process p_stimulus;
 
 end architecture testbench;
