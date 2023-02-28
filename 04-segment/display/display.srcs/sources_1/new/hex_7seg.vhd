@@ -27,7 +27,7 @@ entity hex_7seg is
     blank : in    std_logic;                    --! Display is clear if blank = 1
     hex   : in    std_logic_vector(3 downto 0); --! Binary representation of one hexadecimal symbol
     seg   : out   std_logic_vector(6 downto 0);  --! Seven active-low segments in the order: a, b, ..., g
-    led   : out   std_logic_vector(6 odwnto 0)
+    led   : out   std_logic_vector(7 downto 0)
   );
 end entity hex_7seg;
 
@@ -101,14 +101,29 @@ begin
     end if;
     
     led(3 downto 0) <= hex;
+    if (hex = "0000") then
+        led(4) <= '0';
+    else
+      led(4) <= '1';
+    end if; 
     
-    with hex select
-    led(4) <= '0' when "0000"
-    led(4) <= '0' when (hex = "0000") else '1';
-    led(5) <= '0' when (hex > "1001") else '1';
-    led(6) <= '0' when (hex(0) = '1') else '1';
-    led(7) <= '0' when (hex = "0001" or hex = "0010" or hex = "0100" or hex = "1000") else '1';
+    if (hex > "1001") then
+        led(5) <= '0';
+    else
+      led(5) <= '1';
+    end if; 
     
+    if (hex(0) = '1') then
+        led(6) <= '0';
+    else
+      led(6) <= '1';
+    end if; 
+    
+    if (hex = "0001" or hex = "0010" or hex = "0100" or hex = "1000") then
+        led(7) <= '0';
+    else
+      led(7) <= '1';
+    end if; 
     
   end process p_7seg_decoder;
 end architecture behavioral;
