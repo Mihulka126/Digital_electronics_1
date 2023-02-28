@@ -102,27 +102,27 @@ begin
     
     led(3 downto 0) <= hex;
     if (hex = "0000") then
-        led(4) <= '0';
+        led(4) <= '1';
     else
-      led(4) <= '1';
+      led(4) <= '0';
     end if; 
     
     if (hex > "1001") then
-        led(5) <= '0';
+        led(5) <= '1';
     else
-      led(5) <= '1';
+      led(5) <= '0';
     end if; 
     
     if (hex(0) = '1') then
-        led(6) <= '0';
+        led(6) <= '1';
     else
-      led(6) <= '1';
+      led(6) <= '0';
     end if; 
     
     if (hex = "0001" or hex = "0010" or hex = "0100" or hex = "1000") then
-        led(7) <= '0';
+        led(7) <= '1';
     else
-      led(7) <= '1';
+      led(7) <= '0';
     end if; 
     
   end process p_7seg_decoder;
