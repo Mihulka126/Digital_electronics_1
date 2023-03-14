@@ -1,6 +1,6 @@
 ----------------------------------------------------------
 --
--- Testbench for clock enable circuit.
+-- Testbench for N-bit Up/Down binary counter.
 -- Nexys A7-50T, xc7a50ticsg324-1L
 -- TerosHDL, Vivado v2020.2, EDA Playground
 --
@@ -13,41 +13,45 @@
 library ieee;
   use ieee.std_logic_1164.all;
 
-----------------------------------------------------------
+------------------------------------------------------------
 -- Entity declaration for testbench
-----------------------------------------------------------
+------------------------------------------------------------
 
-entity tb_clock_enable is
+entity tb_cnt_up_down is
   -- Entity of testbench is always empty
-end entity tb_clock_enable;
+end entity tb_cnt_up_down;
 
-----------------------------------------------------------
+------------------------------------------------------------
 -- Architecture body for testbench
-----------------------------------------------------------
+------------------------------------------------------------
 
-architecture testbench of tb_clock_enable is
+architecture testbench of tb_cnt_up_down is
 
-  constant c_MAX               : natural := 5;
+  -- Number of bits for testbench counter
+  constant c_CNT_WIDTH         : natural := 4;
   constant c_CLK_100MHZ_PERIOD : time    := 10 ns;
 
   -- Local signals
   signal sig_clk_100mhz : std_logic;
   signal sig_rst        : std_logic;
-  signal sig_ce         : std_logic;
+  signal sig_en         : std_logic;
+  signal sig_cnt_up     : std_logic;
+  signal sig_cnt        : std_logic_vector(c_CNT_WIDTH - 1 downto 0);
 
 begin
 
-  -- Connecting testbench signals with clock_enable entity
+  -- Connecting testbench signals with cnt_up_down entity
   -- (Unit Under Test)
-  uut_ce : entity work.clock_enable
+  uut_cnt : entity work.cnt_up_down
     generic map (
-      g_MAX => c_MAX
-    ) -- Note that there is NO comma or semicolon between
-      -- generic map section and port map section
+      g_CNT_WIDTH => c_CNT_WIDTH
+    )
     port map (
-      clk => sig_clk_100mhz,
-      rst => sig_rst,
-      ce  => sig_ce
+      clk    => sig_clk_100mhz,
+      rst    => sig_rst,
+      en     => sig_en,
+      cnt_up => sig_cnt_up,
+      cnt    => sig_cnt
     );
 
   --------------------------------------------------------
@@ -75,11 +79,11 @@ begin
   begin
 
     sig_rst <= '0';
-    wait for 28 ns;
+    wait for 12 ns;
 
     -- Reset activated
     sig_rst <= '1';
-    wait for 153 ns;
+    wait for 73 ns;
 
     -- Reset deactivated
     sig_rst <= '0';
@@ -95,9 +99,18 @@ begin
   begin
 
     report "Stimulus process started";
-    -- No other input data is needed
-    report "Stimulus process finished";
-    wait;
+
+    -- Enable counting
+    sig_en <= '1';
+
+    -- Change counter direction
+    sig_cnt_up <= '1';
+    wait for 390 ns;
+    sig_cnt_up <= '0';
+    wait for 300 ns;
+
+    -- Disable counting
+    sig_en <= '0';
 
   end process p_stimulus;
 
