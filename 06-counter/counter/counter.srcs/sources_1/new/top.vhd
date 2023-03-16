@@ -32,17 +32,18 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity top is
-    Port ( CLK100MHZ : in STD_LOGIC;                -- Main clock
-           SW : in STD_LOGIC;                       -- Counter direction
-           CA : out STD_LOGIC;                      -- Cathod A
-           CB : out STD_LOGIC;                      -- Cathod B
-           CC : out STD_LOGIC;                      -- Cathod C
-           CD : out STD_LOGIC;                      -- Cathod D
-           CE : out STD_LOGIC;                      -- Cathod E
-           CF : out STD_LOGIC;                      -- Cathod F
-           CG : out STD_LOGIC;                      -- Cathod G
-           AN : out STD_LOGIC_VECTOR (7 downto 0);  -- Common anode signals to individual displays
-           BTNC : in STD_LOGIC);                    -- Synchronous reset
+    Port ( CLK100MHZ : in STD_LOGIC;                    -- Main clock
+           SW : in STD_LOGIC;                           -- Counter direction
+           CA : out STD_LOGIC;                          -- Cathod A
+           CB : out STD_LOGIC;                          -- Cathod B
+           CC : out STD_LOGIC;                          -- Cathod C
+           CD : out STD_LOGIC;                          -- Cathod D
+           CE : out STD_LOGIC;                          -- Cathod E
+           CF : out STD_LOGIC;                          -- Cathod F
+           CG : out STD_LOGIC;                          -- Cathod G
+           AN : out STD_LOGIC_VECTOR (7 downto 0);      -- Common anode signals to individual displays
+           BTNC : in STD_LOGIC;                         -- Synchronous reset
+           LED : out STD_LOGIC_VECTOR (11 downto 0));   -- LED output
 end top;
 
 ----------------------------------------------------------
@@ -55,10 +56,14 @@ architecture behavioral of top is
   signal sig_en_250ms : std_logic;                    --! Clock enable signal for Counter0
   signal sig_cnt_4bit : std_logic_vector(3 downto 0); --! Counter0
 
+  -- 12-bit counter @ 10 ms
+  signal sig_en_10ms : std_logic;                    --! Clock enable signal for Counter1
+  signal sig_cnt_12bit : std_logic_vector(11 downto 0); --! Counter1
+  
 begin
 
   --------------------------------------------------------
-  -- Instance (copy) of clock_enable entity
+  -- Instance (copy) of clock_enable entity (0)
   --------------------------------------------------------
   clk_en0 : entity work.clock_enable
       generic map(
@@ -71,7 +76,21 @@ begin
       );
 
   --------------------------------------------------------
-  -- Instance (copy) of cnt_up_down entity
+  -- Instance (copy) of clock_enable entity (1)
+  --------------------------------------------------------
+  clk_en1 : entity work.clock_enable
+      generic map(
+          g_MAX => 1000000
+      )
+      port map(
+          clk => CLK100MHZ,
+          rst => BTNC,
+          ce  => sig_en_10ms
+      );
+
+
+  --------------------------------------------------------
+  -- Instance (copy) of cnt_up_down entity (0)
   --------------------------------------------------------
   bin_cnt0 : entity work.cnt_up_down
      generic map(
@@ -86,7 +105,22 @@ begin
       );
 
   --------------------------------------------------------
-  -- Instance (copy) of hex_7seg entity
+  -- Instance (copy) of cnt_up_down entity (1)
+  --------------------------------------------------------
+  bin_cnt1 : entity work.cnt_up_down
+     generic map(
+          g_CNT_WIDTH => 12
+      )
+      port map(
+          clk    => CLK100MHZ,
+          rst    => BTNC,
+          en     => sig_en_10ms,
+          cnt_up => SW,
+          cnt    => sig_cnt_12bit
+      );
+
+  --------------------------------------------------------
+  -- Instance (copy) of hex_7seg entity (0)
   --------------------------------------------------------
   hex2seg : entity work.hex_7seg
       port map(
@@ -101,6 +135,15 @@ begin
           seg(0) => CG
       );
 
+  --------------------------------------------------------
+  -- Instance (copy) of hex_7seg entity (1)
+  --------------------------------------------------------
+  hex2led : entity work.hex_led
+      port map(
+          blank  => BTNC,
+          hex    => sig_cnt_12bit,
+          led    => LED(11 downto 0)
+      );
   --------------------------------------------------------
   -- Other settings
   --------------------------------------------------------
