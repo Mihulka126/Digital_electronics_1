@@ -28,7 +28,7 @@
 
 2. Screenshot with simulated time waveforms. Test: (a) reset, (b) counter direction, (c) enable. Always display all inputs and outputs (display the inputs at the top of the image, the outputs below them) at the appropriate time scale!
 
-   ![Waveforms](waveforms.png)
+   ![Waveforms](images/waveforms.png)
 
 ### Two counters
 
