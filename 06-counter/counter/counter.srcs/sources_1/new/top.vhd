@@ -65,7 +65,7 @@ begin
   --------------------------------------------------------
   -- Instance (copy) of clock_enable entity (0)
   --------------------------------------------------------
-  clk_en0 : entity work.clock_enable
+  clk_en_250ms : entity work.clock_enable
       generic map(
           g_MAX => 25000000
       )
@@ -78,7 +78,7 @@ begin
   --------------------------------------------------------
   -- Instance (copy) of clock_enable entity (1)
   --------------------------------------------------------
-  clk_en1 : entity work.clock_enable
+  clk_en_10ms : entity work.clock_enable
       generic map(
           g_MAX => 1000000
       )
@@ -92,7 +92,7 @@ begin
   --------------------------------------------------------
   -- Instance (copy) of cnt_up_down entity (0)
   --------------------------------------------------------
-  bin_cnt0 : entity work.cnt_up_down
+  bin_cnt_250ms : entity work.cnt_up_down
      generic map(
           g_CNT_WIDTH => 4
       )
@@ -107,7 +107,7 @@ begin
   --------------------------------------------------------
   -- Instance (copy) of cnt_up_down entity (1)
   --------------------------------------------------------
-  bin_cnt1 : entity work.cnt_up_down
+  bin_cnt_10ms : entity work.cnt_up_down
      generic map(
           g_CNT_WIDTH => 12
       )
@@ -116,7 +116,7 @@ begin
           rst    => BTNC,
           en     => sig_en_10ms,
           cnt_up => SW,
-          cnt    => sig_cnt_12bit
+          cnt    => LED
       );
 
   --------------------------------------------------------
@@ -138,12 +138,12 @@ begin
   --------------------------------------------------------
   -- Instance (copy) of hex_7seg entity (1)
   --------------------------------------------------------
-  hex2led : entity work.hex_led
-      port map(
-          blank  => BTNC,
-          hex    => sig_cnt_12bit,
-          led    => LED(11 downto 0)
-      );
+  --hex2led : entity work.hex_led
+  --    port map(
+  --       blank  => BTNC,
+  --        hex    => sig_cnt_12bit,
+  --        led    => LED(11 downto 0)
+  --    );
   --------------------------------------------------------
   -- Other settings
   --------------------------------------------------------
