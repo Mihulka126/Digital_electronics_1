@@ -19,7 +19,7 @@
                 dp  <= dp_vect(0);
                 dig <= "1110";
             else
-                case s_cnt is
+                case sig_cnt is
                     when "11" =>
                         sig_hex <= data3;
                         dp  <= dp_vect(3);
