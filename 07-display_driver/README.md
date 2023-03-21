@@ -15,15 +15,15 @@
     begin
         if rising_edge(clk) then
             if (reset = '1') then
-                s_hex <= data0_i;
-                dp_o  <= dp_i(0);
-                dig_o <= "1110";
+                sig_hex <= data0;
+                dp  <= dp(0);
+                dig <= "1110";
             else
                 case s_cnt is
                     when "11" =>
-                        s_hex <= data3_i;
-                        dp_o  <= dp_i(3);
-                        dig_o <= "0111";
+                        sig_hex <= data3;
+                        dp  <= dp_i(3);
+                        dig <= "0111";
 
                     when "10" =>
                         sig_hex <= data2;
