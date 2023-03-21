@@ -55,7 +55,7 @@ begin
 
   --------------------------------------------------------
   -- Instance (copy) of driver_7seg_4digits entity
-  driver_seg_4 : entity work.driver_7seg_4digits
+  driver_seg_8 : entity work.driver_7seg_8digits
       port map(
           clk       => CLK100MHZ,
           rst       => BTNC,
@@ -80,7 +80,12 @@ begin
           data3(1)  => SW(13),
           data3(0)  => SW(12),
           
-          dp_vect   => "0111",         
+          data4     => "1111",
+          data5     => "1111",
+          data6     => "1111",
+          data7     => "1111",
+          
+          dp_vect   => "11110111",         
           dp        => DP,
           
           seg(6)    => CA,
@@ -91,10 +96,10 @@ begin
           seg(1)    => CF,
           seg(0)    => CG,
 
-          dig(3 downto 0) => AN(3 downto 0)
+          dig(7 downto 0) => AN(7 downto 0)
       );
 
   -- Disconnect the top four digits of the 7-segment display
-  AN(7 downto 4) <= b"1111";
+  -- AN(7 downto 4) <= b"1111";
 
 end architecture Behavioral;
