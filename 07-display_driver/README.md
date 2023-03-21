@@ -16,13 +16,13 @@
         if rising_edge(clk) then
             if (reset = '1') then
                 sig_hex <= data0;
-                dp  <= dp(0);
+                dp  <= dp_vect(0);
                 dig <= "1110";
             else
                 case s_cnt is
                     when "11" =>
                         sig_hex <= data3;
-                        dp  <= dp_i(3);
+                        dp  <= dp_vect(3);
                         dig <= "0111";
 
                     when "10" =>
