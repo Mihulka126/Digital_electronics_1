@@ -92,7 +92,6 @@ begin
             if (sig_en_104us = '1') then
                 data_out <= '0';
             end if;
-            
             if (sig_en_104us = '1') then
                 data_out <= data_in(0);
             end if;
@@ -117,7 +116,6 @@ begin
             if (sig_en_104us = '1') then
                 data_out <= data_in(7);
             end if;
-            
             if (sig_en_104us = '1') then
                 data_out <= parity;
             end if;
@@ -127,8 +125,7 @@ begin
             end if;
             if (sig_en_104us = '1') then
                 data_out <= '1';
-            end if;
-                
+            end if;  
         else
             data_out <= '1';
         end if;
