@@ -72,7 +72,7 @@ begin
   -- Instance (copy) of clock_enable entity generates
   -- an enable pulse every 4 ms
   --------------------------------------------------------
-  clk_en0 : entity work.clock_enable
+  clk_en : entity work.clock_enable
     generic map (
       -- FOR SIMULATION, KEEP THIS VALUE TO 2
       -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000
@@ -90,7 +90,7 @@ begin
   -- Instance (copy) of cnt_up_down entity performs
   -- a 2-bit down counter
   --------------------------------------------------------
-  bin_cnt0 : entity work.cnt_up_down
+  cnt : entity work.cnt_up
     port map (
       clk => clk,
       rst => rst,
@@ -103,7 +103,7 @@ begin
   -- Instance (copy) of hex_7seg entity performs
   -- a 7-segment display decoder
   --------------------------------------------------------
-  hex2seg : entity work.hex_7seg
+  hex_7seg : entity work.hex_7seg
     port map (
       blank => rst,
       hex   => sig_hex,
