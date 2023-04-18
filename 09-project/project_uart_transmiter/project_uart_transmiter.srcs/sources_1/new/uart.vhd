@@ -52,7 +52,7 @@ begin
   -- Instance (copy) of clock_enable entity generates
   -- an enable pulse every 4 ms
   --------------------------------------------------------
-  clk_en0 : entity work.clock_enable
+  clk_en : entity work.clock_enable
     generic map (
       -- FOR SIMULATION, KEEP THIS VALUE TO 2
       -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000

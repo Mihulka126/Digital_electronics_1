@@ -52,12 +52,12 @@ end top;
 -- Architecture body for top level
 ------------------------------------------------------------
 architecture Behavioral of top is
-  -- No internal signals are needed today:)
+
 begin
 
   --------------------------------------------------------
-  -- Instance (copy) of driver_7seg_4digits entity
-  driver_seg_8 : entity work.driver_7seg_2digits
+  -- Instance (copy) of driver_7seg_2digits entity
+  driver_seg : entity work.driver_7seg_2digits
       port map(
           clk       => CLK100MHZ,
           rst       => BTNC,
