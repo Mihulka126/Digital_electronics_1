@@ -45,6 +45,8 @@ architecture Behavioral of uart is
   -- Internal clock enable
   signal sig_en_104us   : std_logic;
   signal parity         : std_logic;
+  signal sig_cnt_4bit   : std_logic_vector (3 downto 0);
+  signal sig_rst_cnt    : std_logic;
 
 
 begin
@@ -65,7 +67,22 @@ begin
       rst => rst,
       ce  => sig_en_104us
     );
-    
+ 
+ 
+   --------------------------------------------------------
+  -- Instance (copy) of cnt_up_down entity
+  --------------------------------------------------------
+  bin_cnt0 : entity work.cnt_up_down_uart
+     generic map(
+          g_CNT_WIDTH => 4
+      )
+      port map(
+          clk => clk,
+          rst => sig_rst_cnt,
+          en => sig_en_104us,
+          cnt_up => '1',
+          cnt => sig_cnt_4bit
+      );
     
   --------------------------------------------------------
   -- p_mux:
@@ -74,60 +91,71 @@ begin
   -- and switches the common anodes of each display.
   --------------------------------------------------------
   p_uart : process (clk) is
-  variable parity_v : std_logic := '0';
+  variable parity_v             : std_logic := '0';
+  variable send                 : std_logic := '0';
+  variable lastButtonState      : std_logic := '0';
+  
   begin
-
+    
     if (rising_edge(clk)) then
       if (rst = '1') then
         data_out <= '1';
+        lastButtonState := '0';
+        send := '0';
+        sig_rst_cnt <= '0';
       else
-
-        if (btn_send = '1') then
+        
+        sig_rst_cnt <= '1';
+        if btn_send = '1' and lastButtonState = '0' then
+            lastButtonState := btn_send;
+            send := '1';
             data_out <= '1'; --default
-                for i in data_in'range loop
-                    parity_v := parity_v xor data_in(i);
-                end loop;
-                parity <= parity_v;
+            parity <= data_in(0) xor data_in(1) xor data_in(2) xor data_in(3) xor data_in(4) xor data_in(5) xor data_in(6) xor data_in(7);          
+        end if;
+        
+        if send = '1' then
+            sig_rst_cnt <= '0';
+            case sig_cnt_4bit is
+                when "0000" =>
+                    data_out <= '1';
+                when "0001" =>
+                    data_out <= '0'; -- start bit
+                when "0010" =>
+                    data_out <= data_in(0);
+                when "0011" =>
+                    data_out <= data_in(1);
+                when "0100" =>
+                    data_out <= data_in(2);
+                when "0101" =>
+                    data_out <= data_in(3);
+                when "0110" =>
+                    data_out <= data_in(4);
+                when "0111" =>
+                    data_out <= data_in(5);
+                when "1000" =>
+                    data_out <= data_in(6);
+                when "1001" =>
+                    data_out <= data_in(7);
+                when "1010" =>
+                    data_out <= parity;
+                when "1011" =>
+                    data_out <= '1';
+                when "1100" =>
+                    data_out <= '1';
+                    send := '0';
+                    sig_rst_cnt <= '1';
+                    lastButtonState := btn_send;
+                when others =>
+                    data_out <= '1';
+          
+            end case;
             
-            if (sig_en_104us = '1') then
-                data_out <= '0';
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(0);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(1);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(2);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(3);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(4);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(5);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(6);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= data_in(7);
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= parity;
-            end if;
-            
-            if (sig_en_104us = '1') then
-                data_out <= '1';
-            end if;
-            if (sig_en_104us = '1') then
-                data_out <= '1';
-            end if;  
         else
             data_out <= '1';
+        end if;
+        
+        if btn_send = '0' and lastButtonState = '1' then
+            lastButtonState := btn_send;
         end if;
       end if;
     end if;
