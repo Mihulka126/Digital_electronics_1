@@ -4,17 +4,27 @@
 
 ### Team members
 
-* Member 1 (responsible for ...)
-* Member 2 (responsible for ...)
-* Member 3 (responsible for ...)
+* Martin Mihulka
+* Michal Papaj
+* Václav Kubeš
+* Filip Leikep
 
 ## Theoretical description and explanation
 
-Enter a description of the problem and how to solve it.
+UART is asynchronous serial bus. Only two wires are needed - data and ground, there is no clock signal. The transfer speed is fixed and must be the same on
+both devices. Default state of data is high, for example +3,3V. When the wires are broken, we know that an error has occurred.
+Transmission starts with start-bit - data wire is pulled down to 0V for one period and then data bits. Our devices send and recive eight bits of data. 
+After data there is a parity bit and then two stop bits. If the parity bit is a 1 (even parity), the 1 or logic-high bit in the data frame should total to an 
+odd number. The stop bits raise the level back to high and the transfer is complete. 
 
 ## Hardware description of demo application
 
-Insert descriptive text and schematic(s) of your implementation.
+Transmitter:
+Input data word is selected by switches SW 0 (LSB) to SW 7 (MSB) and displayed on 7-seg display in hexadecimal. Right button starts transmission. 
+Central button is for reset. Data are transmitted by pin "číslo pinu". 
+
+Reciever:
+Data is recieved by pin "číslo" and displayed on 7-seg display in hexadecimal. Central button is for reset. 
 
 ## Software description
 
