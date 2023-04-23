@@ -42,7 +42,7 @@ library ieee;
 --
 ----------------------------------------------------------
 
-entity driver_7seg_2digits is
+entity driver_7seg_2digit is
   port (
     clk     : in    std_logic;
     rst     : in    std_logic;
@@ -51,13 +51,13 @@ entity driver_7seg_2digits is
     seg     : out   std_logic_vector(6 downto 0);
     dig     : out   std_logic_vector(1 downto 0)
   );
-end entity driver_7seg_2digits;
+end entity driver_7seg_2digit;
 
 ----------------------------------------------------------
 -- Architecture declaration for display driver
 ----------------------------------------------------------
 
-architecture behavioral of driver_7seg_2digits is
+architecture behavioral of driver_7seg_2digit is
 
   -- Internal clock enable
   signal sig_en_4ms : std_logic;
