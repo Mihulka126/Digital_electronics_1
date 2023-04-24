@@ -1,15 +1,6 @@
 ----------------------------------------------------------
---
---! @title Driver for 2-digit 7-segment display
---! @author Tomas Fryza
---! Dept. of Radio Electronics, Brno Univ. of Technology, Czechia
---!
---! @copyright (c) 2020 Tomas Fryza
---! This work is licensed under the terms of the MIT license
---
--- Hardware: Nexys A7-50T, xc7a50ticsg324-1L
--- Software: TerosHDL, Vivado 2020.2, EDA Playground
---
+-- DRIVER FOR TWO DIGIT 7SEG DISPLAY
+-- VER 1.0
 ----------------------------------------------------------
 
 library ieee;
@@ -21,23 +12,22 @@ library ieee;
 --
 --             +-------------------+
 --        -----|> clk              |
---        -----| rst            dp |-----
+--        -----| rst               | 
 --             |          seg(6:0) |--/--
 --        --/--| data0(3:0)        |  7
 --        --/--| data1(3:0)        |
---          4  |           dig(7:0)|--/--
---        --/--| dp                |  4
---          4  +-------------------+
+--          4  |           dig(1:0)|--/--
+--             |                   |  2
+--             +-------------------+
 --
 -- Inputs:
 --   clk          -- Main clock
 --   rst          -- Synchronous reset
---   dataX(7:0)   -- Data values for individual digits
---   dp_vect(7:0) -- Decimal points for individual digits
---
+--   data0(3:0)   -- Data values for first digit
+--   data1(7:4)   -- Data values for second digit
+
 -- Outputs:
---   dp:          -- Decimal point for specific digit
---   seg(6:0)     -- Cathode values for individual segments
+--   seg(1:0)     -- Cathode values for individual segments
 --   dig(7:0)     -- Common anode signals to individual digits
 --
 ----------------------------------------------------------
@@ -61,7 +51,7 @@ architecture behavioral of driver_7seg_2digits is
 
   -- Internal clock enable
   signal sig_en_4ms : std_logic;
-  -- Internal 3-bit counter for multiplexing 4 digits
+  -- Internal 1-bit counter for multiplexing 2 digits
   signal sig_cnt_1bit : std_logic;
   -- Internal 4-bit value for 7-segment decoder
   signal sig_hex : std_logic_vector(3 downto 0);
@@ -70,20 +60,16 @@ begin
 
   --------------------------------------------------------
   -- Instance (copy) of clock_enable entity generates
-  -- an enable pulse every 4 ms
+  -- an enable pulse every 8 ms
   --------------------------------------------------------
-  clk_en : entity work.clock_enable
+  clk_en0 : entity work.clock_enable
     generic map (
-      -- FOR SIMULATION, KEEP THIS VALUE TO 2
-      -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000
-      -- 2      @ 2 ns
-      -- 200000 @ 2 ms
       g_max => 800000
     )
     port map (
       clk => clk,
       rst => rst,
-      ce  => sig_en_4ms
+      ce  => sig_en_8ms
     );
 
   --------------------------------------------------------
@@ -94,7 +80,7 @@ begin
     port map (
       clk => clk,
       rst => rst,
-      en => sig_en_4ms,
+      en => sig_en_8ms,
       cnt_up => '0',
       cnt => sig_cnt_1bit
     );
@@ -113,7 +99,7 @@ begin
   --------------------------------------------------------
   -- p_mux:
   -- A sequential process that implements a multiplexer for
-  -- selecting data for a single digit, a decimal point,
+  -- selecting data for a single digit
   -- and switches the common anodes of each display.
   --------------------------------------------------------
   p_mux : process (clk) is
