@@ -1,35 +1,11 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 04/04/2023 11:32:19 AM
--- Design Name: 
--- Module Name: uart - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
+-- UART TRANSMITTER
+-- VERSION: 1.0
 ----------------------------------------------------------------------------------
 
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity uart is
     Port (  
@@ -42,7 +18,6 @@ end uart;
 
 architecture Behavioral of uart is
 
-  -- Internal clock enable
   signal sig_en_104us   : std_logic;
   signal parity         : std_logic;
   signal sig_cnt_4bit   : std_logic_vector (3 downto 0);
@@ -52,14 +27,10 @@ architecture Behavioral of uart is
 begin
   --------------------------------------------------------
   -- Instance (copy) of clock_enable entity generates
-  -- an enable pulse every 4 ms
+  -- an enable pulse every 104 us
   --------------------------------------------------------
-  clk_en : entity work.clock_enable
+  clk_en1 : entity work.clock_enable
     generic map (
-      -- FOR SIMULATION, KEEP THIS VALUE TO 2
-      -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000
-      -- 2      @ 2 ns
-      -- 200000 @ 2 ms
       g_max => 10417
     )
     port map (
@@ -70,9 +41,9 @@ begin
  
  
    --------------------------------------------------------
-  -- Instance (copy) of cnt_up_down entity
+  -- Instance (copy) of cnt_up_down_uart entity
   --------------------------------------------------------
-  bin_cnt0 : entity work.cnt_up_down_uart
+  bin_cnt1 : entity work.cnt_up_down_uart
      generic map(
           g_CNT_WIDTH => 4
       )
@@ -85,13 +56,15 @@ begin
       );
     
   --------------------------------------------------------
-  -- p_mux:
-  -- A sequential process that implements a multiplexer for
-  -- selecting data for a single digit, a decimal point,
-  -- and switches the common anodes of each display.
+  -- p_uart_tx:
+  -- sends input data (8 bit in paraller form) using UART
+  -- protocol
+  -- speed is set to 9600 bauds
+  -- even parity is evaluated 
+  -- data transmission is ended by two stop bits
+  -- data is sent only ones per button press
   --------------------------------------------------------
-  p_uart : process (clk) is
-  variable parity_v             : std_logic := '0';
+  p_uart_tx : process (clk) is
   variable send                 : std_logic := '0';
   variable lastButtonState      : std_logic := '0';
   
@@ -102,7 +75,7 @@ begin
         data_out <= '1';
         lastButtonState := '0';
         send := '0';
-        sig_rst_cnt <= '0';
+        sig_rst_cnt <= '1';
       else
         
         sig_rst_cnt <= '1';
@@ -137,11 +110,11 @@ begin
                 when "1001" =>
                     data_out <= data_in(7);
                 when "1010" =>
-                    data_out <= parity;
+                    data_out <= parity;  -- even parity
                 when "1011" =>
-                    data_out <= '1';
+                    data_out <= '1'; --stop bit
                 when "1100" =>
-                    data_out <= '1';
+                    data_out <= '1'; --stop bit
                     send := '0';
                     sig_rst_cnt <= '1';
                     lastButtonState := btn_send;
@@ -160,6 +133,6 @@ begin
       end if;
     end if;
 
-  end process p_uart;
+  end process p_uart_tx;
 
 end Behavioral;
