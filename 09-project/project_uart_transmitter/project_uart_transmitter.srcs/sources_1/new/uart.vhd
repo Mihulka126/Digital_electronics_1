@@ -91,7 +91,6 @@ begin
   -- and switches the common anodes of each display.
   --------------------------------------------------------
   p_uart : process (clk) is
-  variable parity_v             : std_logic := '0';
   variable send                 : std_logic := '0';
   variable lastButtonState      : std_logic := '0';
   
@@ -102,7 +101,7 @@ begin
         data_out <= '1';
         lastButtonState := '0';
         send := '0';
-        sig_rst_cnt <= '0';
+        sig_rst_cnt <= '1';
       else
         
         sig_rst_cnt <= '1';
