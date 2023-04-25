@@ -44,7 +44,8 @@ entity top is
            AN : out STD_LOGIC_VECTOR (7 downto 0);
            BTNC : in STD_LOGIC;
            JA : in STD_LOGIC;
-           LED : out std_logic);
+           LEDP : out std_logic);
+           --LED : out STD_LOGIC_VECTOR (15 downto 8));
 end top;
 
 ------------------------------------------------------------
@@ -82,7 +83,8 @@ uart_rx : entity work.uart_rx
         clk         => CLK100MHZ,
         rst         => BTNC,
         data_in     => JA,
-        parity      => LED,
+        parity      => LEDP,
+        --data_out    => LED
         data_out    => sig_data_out
     );
 
