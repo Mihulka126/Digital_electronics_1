@@ -1,6 +1,15 @@
 ----------------------------------------------------------
--- DRIVER FOR TWO DIGIT 7SEG DISPLAY
--- VER 1.0
+--
+--! @title Driver for 2-digit 7-segment display
+--! @author Tomas Fryza
+--! Dept. of Radio Electronics, Brno Univ. of Technology, Czechia
+--!
+--! @copyright (c) 2020 Tomas Fryza
+--! This work is licensed under the terms of the MIT license
+--
+-- Hardware: Nexys A7-50T, xc7a50ticsg324-1L
+-- Software: TerosHDL, Vivado 2020.2, EDA Playground
+--
 ----------------------------------------------------------
 
 library ieee;
@@ -12,27 +21,28 @@ library ieee;
 --
 --             +-------------------+
 --        -----|> clk              |
---        -----| rst               | 
+--        -----| rst            dp |-----
 --             |          seg(6:0) |--/--
 --        --/--| data0(3:0)        |  7
 --        --/--| data1(3:0)        |
---          4  |           dig(1:0)|--/--
---             |                   |  2
---             +-------------------+
+--          4  |           dig(7:0)|--/--
+--        --/--| dp                |  4
+--          4  +-------------------+
 --
 -- Inputs:
 --   clk          -- Main clock
 --   rst          -- Synchronous reset
---   data0(3:0)   -- Data values for first digit
---   data1(7:4)   -- Data values for second digit
-
+--   dataX(7:0)   -- Data values for individual digits
+--   dp_vect(7:0) -- Decimal points for individual digits
+--
 -- Outputs:
---   seg(1:0)     -- Cathode values for individual segments
+--   dp:          -- Decimal point for specific digit
+--   seg(6:0)     -- Cathode values for individual segments
 --   dig(7:0)     -- Common anode signals to individual digits
 --
 ----------------------------------------------------------
 
-entity driver_7seg_2digits is
+entity driver_7seg_2digit is
   port (
     clk     : in    std_logic;
     rst     : in    std_logic;
@@ -41,17 +51,17 @@ entity driver_7seg_2digits is
     seg     : out   std_logic_vector(6 downto 0);
     dig     : out   std_logic_vector(1 downto 0)
   );
-end entity driver_7seg_2digits;
+end entity driver_7seg_2digit;
 
 ----------------------------------------------------------
 -- Architecture declaration for display driver
 ----------------------------------------------------------
 
-architecture behavioral of driver_7seg_2digits is
+architecture behavioral of driver_7seg_2digit is
 
   -- Internal clock enable
   signal sig_en_8ms : std_logic;
-  -- Internal 1-bit counter for multiplexing 2 digits
+  -- Internal 3-bit counter for multiplexing 4 digits
   signal sig_cnt_1bit : std_logic;
   -- Internal 4-bit value for 7-segment decoder
   signal sig_hex : std_logic_vector(3 downto 0);
@@ -62,9 +72,13 @@ begin
   -- Instance (copy) of clock_enable entity generates
   -- an enable pulse every 8 ms
   --------------------------------------------------------
-  clk_en0 : entity work.clock_enable
+  clk_en : entity work.clock_enable
     generic map (
-      g_max => 8
+      -- FOR SIMULATION, KEEP THIS VALUE TO 2
+      -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000
+      -- 2      @ 2 ns
+      -- 200000 @ 2 ms
+      g_max => 800000
     )
     port map (
       clk => clk,
@@ -99,7 +113,7 @@ begin
   --------------------------------------------------------
   -- p_mux:
   -- A sequential process that implements a multiplexer for
-  -- selecting data for a single digit
+  -- selecting data for a single digit, a decimal point,
   -- and switches the common anodes of each display.
   --------------------------------------------------------
   p_mux : process (clk) is

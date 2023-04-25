@@ -61,7 +61,7 @@ begin
         -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000
         -- 2      @ 2 ns
         -- 200000 @ 2 ms
-        g_max => 10417
+        g_max => 10418
         )
         port map (
         clk => clk,
@@ -120,40 +120,34 @@ p_uart_rx : process (clk) is
                         sig_data_out := "00000000";
                     when "0001" =>
                         sig_data_out(0) := data_in;
-                        parity_data :=  data_in;
                     when "0010" =>
                         sig_data_out(1) := data_in;
-                        parity_data := parity_data xor data_in;
                     when "0011" =>
                         sig_data_out(2) := data_in;
-                        parity_data := parity_data xor data_in;
                     when "0100" =>
                         sig_data_out(3) := data_in;
-                        parity_data := parity_data xor data_in;
                     when "0101" =>
                         sig_data_out(4) := data_in;
-                        parity_data := parity_data xor data_in;
                     when "0110" =>
                         sig_data_out(5) := data_in;
-                        parity_data := parity_data xor data_in;
                     when "0111" =>
                         sig_data_out(6) := data_in;
-                        parity_data := parity_data xor data_in;
                     when "1000" =>
                         sig_data_out(7) := data_in;
-                        parity_data := parity_data xor data_in;
                     when others =>          -- parity
                         parity_in := data_in;
-                        recieve := '0';
-                        lastState := '0';
                         sig_rst_cnt <= '1';
+                        data_out <= sig_data_out;
+                        parity_data := sig_data_out(0) xor sig_data_out(1) xor sig_data_out(2) xor sig_data_out(3) xor sig_data_out(4) xor sig_data_out(5) xor sig_data_out(6) xor sig_data_out(7);
                         if parity_in = parity_data then
                             parity <= '1';
                         end if;
+                        recieve := '0';
+                        lastState := '0';
                 end case;       
                 
             end if;
-            data_out <= sig_data_out;
+            
 
         end if;
 

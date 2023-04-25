@@ -50,7 +50,7 @@ end entity driver_7seg_2digits;
 architecture behavioral of driver_7seg_2digits is
 
   -- Internal clock enable
-  signal sig_en_4ms : std_logic;
+  signal sig_en_8ms : std_logic;
   -- Internal 1-bit counter for multiplexing 2 digits
   signal sig_cnt_1bit : std_logic;
   -- Internal 4-bit value for 7-segment decoder
