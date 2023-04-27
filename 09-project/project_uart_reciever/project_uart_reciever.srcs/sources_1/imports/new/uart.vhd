@@ -37,7 +37,8 @@ entity uart_rx is
         rst         : in   std_logic; 
         data_in     : in   std_logic;
         parity      : out  std_logic;
-        data_out    : out  std_logic_vector(7 downto 0));
+        data_out    : out  std_logic_vector(7 downto 0);
+        data_analyze : out  std_logic);
         
 end uart_rx;
 
@@ -55,13 +56,13 @@ begin
   -- Instance (copy) of clock_enable entity generates
   -- an enable pulse every 4 ms
   --------------------------------------------------------
-    clk_en : entity work.clock_enable
+    clk_en0 : entity work.clock_enable
         generic map (
         -- FOR SIMULATION, KEEP THIS VALUE TO 2
         -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000
         -- 2      @ 2 ns
         -- 200000 @ 2 ms
-        g_max => 10418
+        g_max => 10417
         )
         port map (
         clk => clk,
@@ -92,10 +93,10 @@ p_uart_rx : process (clk) is
     variable parity_data          : std_logic := '0';
     variable recieve              : std_logic := '0';
     variable lastState            : std_logic := '0';
-    variable sig_data_out         : std_logic_vector(7 downto 0) := "00000000";
+    variable sig_data_out         : std_logic_vector(7 downto 0);
   
     begin
-    
+        
         if (rst = '1') then
             data_out <= "00000000";
             lastState := '0';
@@ -134,10 +135,10 @@ p_uart_rx : process (clk) is
                         sig_data_out(6) := data_in;
                     when "1000" =>
                         sig_data_out(7) := data_in;
-                    when others =>          -- parity
+                    when "1001" =>          -- parity
                         parity_in := data_in;
+                    when others =>
                         sig_rst_cnt <= '1';
-                        data_out <= sig_data_out;
                         parity_data := sig_data_out(0) xor sig_data_out(1) xor sig_data_out(2) xor sig_data_out(3) xor sig_data_out(4) xor sig_data_out(5) xor sig_data_out(6) xor sig_data_out(7);
                         if parity_in = parity_data then
                             parity <= '1';
@@ -147,7 +148,6 @@ p_uart_rx : process (clk) is
                 end case;       
                 
             end if;
-            
 
         end if;
 

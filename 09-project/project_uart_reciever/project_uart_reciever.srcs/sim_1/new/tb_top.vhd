@@ -15,7 +15,6 @@ architecture testbench of tb_top is
 
   signal sig_rst   : std_logic := '0';
   signal sig_data_in   : std_logic := '1';
-  signal sig_data_out  : std_logic_vector(7 downto 0);
   
   -- clock signal
   signal sig_clk_100mhz : std_logic := '0';
