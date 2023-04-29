@@ -27,7 +27,6 @@ architecture testbench of tb_uart_rx is
     port map (
       clk => sig_clk_100mhz,
       data_in => sig_data_in,
-      data_out   => sig_data_out,
       rst => sig_rst
     );
 

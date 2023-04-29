@@ -54,7 +54,15 @@ end top;
 ------------------------------------------------------------
 architecture Behavioral of top is
 
-signal sig_data_out         : std_logic_vector (7 downto 0);
+signal sig_bit0             : std_logic;
+signal sig_bit1             : std_logic;
+signal sig_bit2             : std_logic;
+signal sig_bit3             : std_logic;
+signal sig_bit4             : std_logic;
+signal sig_bit5             : std_logic;
+signal sig_bit6             : std_logic;
+signal sig_bit7             : std_logic;
+
 
 begin
   --------------------------------------------------------
@@ -64,8 +72,14 @@ begin
           clk       => CLK100MHZ,
           rst       => BTNC,
           
-          data0     => sig_data_out(3 downto 0),
-          data1     => sig_data_out(7 downto 4),
+          data0(0)     => sig_bit0,
+          data0(1)     => sig_bit1,
+          data0(2)     => sig_bit2,
+          data0(3)     => sig_bit3,
+          data1(0)     => sig_bit4,
+          data1(1)     => sig_bit5,
+          data1(2)     => sig_bit6,
+          data1(3)     => sig_bit7,
 
           seg(6)    => CA,
           seg(5)    => CB,
@@ -86,8 +100,15 @@ uart_rx : entity work.uart_rx
         data_in     => JA,
         parity      => LEDP,
         --data_out    => LED
-        data_out    => sig_data_out,
-        data_analyze => JB
+        data_analyze => JB,
+        data_out_bit0 => sig_bit0,
+        data_out_bit1 => sig_bit1,
+        data_out_bit2 => sig_bit2,
+        data_out_bit3 => sig_bit3,
+        data_out_bit4 => sig_bit4,
+        data_out_bit5 => sig_bit5,
+        data_out_bit6 => sig_bit6,
+        data_out_bit7 => sig_bit7
     );
 
   -- Disconnect the top four digits of the 7-segment display

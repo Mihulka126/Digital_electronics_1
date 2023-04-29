@@ -33,12 +33,19 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity uart_rx is
     Port (  
-        clk         : in   std_logic;    
-        rst         : in   std_logic; 
-        data_in     : in   std_logic;
-        parity      : out  std_logic;
-        data_out    : out  std_logic_vector(7 downto 0);
-        data_analyze : out  std_logic);
+        clk             : in   std_logic;    
+        rst             : in   std_logic; 
+        data_in         : in   std_logic;
+        parity          : out  std_logic;
+        data_out_bit0   : out  std_logic;
+        data_out_bit1   : out  std_logic;
+        data_out_bit2   : out  std_logic;
+        data_out_bit3   : out  std_logic;
+        data_out_bit4   : out  std_logic;
+        data_out_bit5   : out  std_logic;
+        data_out_bit6   : out  std_logic;
+        data_out_bit7   : out  std_logic;
+        data_analyze    : out  std_logic);
         
 end uart_rx;
 
@@ -96,9 +103,9 @@ p_uart_rx : process (clk) is
     variable sig_data_out         : std_logic_vector(7 downto 0);
   
     begin
-        
+    if (rising_edge(clk)) then
         if (rst = '1') then
-            data_out <= "00000000";
+            sig_data_out := "00000000";
             lastState := '0';
             recieve := '0';
             sig_rst_cnt <= '1';
@@ -143,6 +150,14 @@ p_uart_rx : process (clk) is
                         if parity_in = parity_data then
                             parity <= '1';
                         end if;
+                        data_out_bit0 <= sig_data_out(0);
+                        data_out_bit1 <= sig_data_out(1);
+                        data_out_bit2 <= sig_data_out(2);
+                        data_out_bit3 <= sig_data_out(3);
+                        data_out_bit4 <= sig_data_out(4);
+                        data_out_bit5 <= sig_data_out(5);
+                        data_out_bit6 <= sig_data_out(6);
+                        data_out_bit7 <= sig_data_out(7);
                         recieve := '0';
                         lastState := '0';
                 end case;       
@@ -150,7 +165,8 @@ p_uart_rx : process (clk) is
             end if;
 
         end if;
-
+    end if;
+    
   end process p_uart_rx;
 
 end Behavioral;

@@ -36,7 +36,7 @@ architecture testbench of tb_top is
  p_clk_gen : process is
   begin
 
-    while now < 2000 us loop             
+    while now < 10000 us loop             
 
       sig_clk_100mhz <= '0';
       wait for c_CLK_100MHZ_PERIOD / 2;
@@ -103,7 +103,32 @@ architecture testbench of tb_top is
     sig_data_in <= '1';
     wait for 104 us;
     
-      
+        sig_data_in <= '1';
+    wait for 150 us;
+    
+    sig_data_in <= '0';
+    wait for 104 us;
+    
+    sig_data_in <= '0';
+    wait for 104 us;
+    sig_data_in <= '1';
+    wait for 104 us;
+    sig_data_in <= '1';
+    wait for 104 us;
+    sig_data_in <= '0';
+    wait for 104 us;
+    sig_data_in <= '0';
+    wait for 104 us;
+    sig_data_in <= '0';
+    wait for 104 us;
+    sig_data_in <= '0';
+    wait for 104 us;
+    sig_data_in <= '1';
+    wait for 104 us;
+    
+    sig_data_in <= '1';
+    wait for 104 us;
+     
 
 
     report "Stimulus process finished";
