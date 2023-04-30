@@ -61,7 +61,52 @@ Simplified flowchart of `p_uart_rx` process in uart transmitter component for be
 
   ### Component(s) simulation
 
-Write descriptive text and simulation screenshots of your components.
+#### UART TRANSMITTER:
+##### tb_uart
+[Source file uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sources_1/new/uart.vhd)
+[Testbench of uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sim_1/new/tb_uart.vhd)
+![uart.vhd simulation](images/tb_uart_tx.png)
+-sig_rst interrupts transmitting the signal
+-sig_data is the imputed 8-bit word
+-sig_send start sending the signal to output and is accomplished by pressing the right button
+-sig_out is the serial output on which is the signal send.The frequency of output signal is 9600 Hz
+-sig_cnt is determining which bit of input word is being sent.
+
+##### tb_top
+[Source file uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sources_1/new/top.vhd)
+[Testbench of uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sim_1/new/tb_top.vhd)
+![top.vhd simulation](images/tb_top_tx.png)
+-top contains the uart and driver_7seg_2digit, which means that the simulation is the same as in the preceding simulations.
+
+##### tb_driver_seg
+[Source file uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sources_1/new/driver_7seg_2digit.vhd)
+[Testbench of uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sim_1/new/tb_driver_seg.vhd)
+![driver_7seg_2digit.vhd simulation](images/tb_driver_seg_tx.png)
+-input data word is separated into 2 separated 4-bit words which are used as data0 and data1
+-Digit on which the 4-bit word is shown is determined by sig_digit, which periodically changes from one digit to another. In real application the frequency is customized to the human eye.
+-sig_seg is the translation from 4-bit word to seven segment system.
+
+
+#### UART RECIEVER:
+##### tb_uart_rx
+[Source file uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sources_1/imports/new/uart.vhd)
+[Testbench of uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sim_1/new/tb_uart_rx.vhd)
+![uart.vhd simulation](images/tb_uart_rx.png)
+-sig_data is being read with a frequency of 9600 Hz. The value is being stored in an internal signal and after the sending process ends the internal value is copied to data. At the end of the process, the parity is also being calculated and if it matches the parity sent by the signal then the signal parity gains the value of ‘1’.
+
+##### tb_top
+[Source file uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sources_1/imports/new/top.vhd)
+[Testbench of uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sim_1/new/tb_top.vhd)
+![top.vhd simulation](images/tb_top_rx.png)
+-top contains the uart_rx and driver_7seg_2digit, which means that the simulation is the same as in the preceding simulations.
+
+##### tb_driver_seg
+[Source file uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sources_1/imports/new/driver_7seg_2digit.vhd)
+[Testbench of uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sim_1/new/tb_driver_seg.vhd)
+![driver_7seg_2digit.vhd simulation](images/tb_driver_seg_rx.png)
+-top contains the uart_rx and driver_7seg_2digit, which means that the simulation is the same as in the preceding simulations.
+
+
 
 ## Instructions
 To send data:
@@ -80,7 +125,13 @@ To recieve data:
   The control is very simple and intuitive. Here is picture with transmitter and receiver connected. There are labels in the picture so you can orientate easily.
   
   ![photo of uart tx and rx with labels](images/rx-tx-popsano.jpg)
+
+## Summary
+
+
 ## References
 
-1. Put here the literature references you used.
-2. ...
+1. https://github.com/tomas-fryza/digital-electronics-1
+2. https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter
+3. https://www.analog.com/en/analog-dialogue/articles/uart-a-hardware-communication-protocol.html
+4. https://stackoverflow.com/questions/tagged/uart
