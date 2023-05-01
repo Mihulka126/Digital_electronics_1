@@ -76,18 +76,18 @@ Simplified flowchart of `p_uart_rx` process in uart transmitter component for be
 - sig_cnt is determining which bit of input word is being sent.
 
 ##### tb_top
-[Source file uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sources_1/new/top.vhd)
+[Source file top.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sources_1/new/top.vhd)
   
-[Testbench of uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sim_1/new/tb_top.vhd)
+[Testbench of top.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sim_1/new/tb_top.vhd)
   
 ![top.vhd simulation](images/tb_top_tx.png)
   
 - top contains the uart and driver_7seg_2digit, which means that the simulation is the same as in the preceding simulations.
 
 ##### tb_driver_seg
-[Source file uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sources_1/new/driver_7seg_2digit.vhd)
+[Source file driver_7seg_2digit.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sources_1/new/driver_7seg_2digit.vhd)
   
-[Testbench of uart.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sim_1/new/tb_driver_seg.vhd)
+[Testbench of driver_7seg_2digit.vhd](project_uart_transmitter/project_uart_transmitter.srcs/sim_1/new/tb_driver_seg.vhd)
   
 ![driver_7seg_2digit.vhd simulation](images/tb_driver_seg_tx.png)
 
@@ -98,27 +98,27 @@ Simplified flowchart of `p_uart_rx` process in uart transmitter component for be
 
 #### UART RECIEVER:
 ##### tb_uart_rx
-[Source file uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sources_1/imports/new/uart.vhd)
+[Source file uart.vhd](project_uart_reciever/project_uart_reciever.srcs/sources_1/imports/new/uart.vhd)
   
-[Testbench of uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sim_1/new/tb_uart_rx.vhd)
+[Testbench of uart.vhd](project_uart_reciever/project_uart_reciever.srcs/sim_1/new/tb_uart_rx.vhd)
 
   ![uart.vhd simulation](images/tb_uart_rx.png)
 
  - sig_data is being read with a frequency of 9600 Hz. The value is being stored in an internal signal and after the sending process ends the internal value is copied to data. At the end of the process, the parity is also being calculated and if it matches the parity sent by the signal then the signal parity gains the value of ‘1’.
 
 ##### tb_top
-[Source file uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sources_1/imports/new/top.vhd)
+[Source file top.vhd](project_uart_reciever/project_uart_reciever.srcs/sources_1/imports/new/top.vhd)
   
-[Testbench of uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sim_1/new/tb_top.vhd)
+[Testbench of top.vhd](project_uart_reciever/project_uart_reciever.srcs/sim_1/new/tb_top.vhd)
   
 ![top.vhd simulation](images/tb_top_rx.png)
 
  - top contains the uart_rx and driver_7seg_2digit, which means that the simulation is the same as in the preceding simulations.
 
 ##### tb_driver_seg
-[Source file uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sources_1/imports/new/driver_7seg_2digit.vhd)
+[Source file driver_7seg_2digit.vhd](project_uart_reciever/project_uart_reciever.srcs/sources_1/imports/new/driver_7seg_2digit.vhd)
   
-[Testbench of uart.vhd](project_uart_transmitter/project_uart_reciever.srcs/sim_1/new/tb_driver_seg.vhd)
+[Testbench of driver_7seg_2digit.vhd](project_uart_reciever/project_uart_reciever.srcs/sim_1/new/tb_driver_seg.vhd)
   
 ![driver_7seg_2digit.vhd simulation](images/tb_driver_seg_rx.png)
 
