@@ -145,7 +145,9 @@ To recieve data:
   ![photo of uart tx and rx with labels](images/rx-tx-popsano.jpg)
 
 ## Summary
-
+We managed to create UART transmitter which works as described in hardware describtion, software describtion and instructions. We tested its function in simulations and on Nexys board using data analyzator connected to computer. We were able to see the correct behaviour of the code which includes displaying 8 bits on two seven segment displays and sending those bits to a pin that we used as output. 
+With the UART reciever it was a different story. We were able to read the input data form transmitter correctly but for some unknown  reason we were unable to display the data on two seven segment displays. We tested this behaviour in simulations where with the same input as in real conditions it worked. We even connected the data analyzator to the board and outputted to it to see if it reads the data correctly and it did so we figured that the issue is in communication between `uart.vhd` and `driver_7seg_2digits.vhd` in `top.vhd`.
+We created a new version of UART reciever which could work but we were unable to test it on Nexys board since we've created this version after our school lessons ended. This version differs from the previous one mainly in the way we connect output from `uart.vhd` and input to `driver_7seg_2digit.vhd` in `top.vhd`.
 
 ## References
 
