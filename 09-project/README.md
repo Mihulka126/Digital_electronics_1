@@ -144,7 +144,7 @@ To recieve data:
   
   ![photo of uart tx and rx with labels](images/rx-tx-popsano.jpg)
 
-s
+  
 ## Summary
 
 We managed to create UART transmitter which works as described in hardware describtion, software describtion and instructions. We tested its function in simulations and on Nexys board using data analyzator connected to computer. We were able to see the correct behaviour of the code which includes displaying 8 bits on two seven segment displays and sending those bits to a pin that we used as output. 
