@@ -10,4 +10,4 @@
 6. [Binary counter](06-counter)
 7. [Driver for multiple seven-segment displays](07-display_driver)
 8. [Traffic light controller](08-traffic_lights)
-9. [Project](project)
+9. [Project](09-project)
