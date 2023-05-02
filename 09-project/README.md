@@ -153,6 +153,7 @@ With the UART reciever it was a different story. We were able to read the input 
 
 We created a new version of UART reciever which could work but we were unable to test it on Nexys board since we've created this version after our school lessons ended. This version differs from the previous one mainly in the way we connect output from `uart.vhd` and input to `driver_7seg_2digit.vhd` in `top.vhd`.
 
+Edit: The new version was proven functional.
 
 ## References
 
