@@ -78,7 +78,7 @@ begin
       -- FOR IMPLEMENTATION, CHANGE THIS VALUE TO 200,000
       -- 2      @ 2 ns
       -- 200000 @ 2 ms
-      g_max => 8
+      g_max => 800000
     )
     port map (
       clk => clk,

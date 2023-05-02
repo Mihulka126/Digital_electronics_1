@@ -106,6 +106,14 @@ p_uart_rx : process (clk) is
     if (rising_edge(clk)) then
         if (rst = '1') then
             sig_data_out := "00000000";
+            data_out_bit0 <= '0';
+            data_out_bit1 <= '0';
+            data_out_bit2 <= '0';
+            data_out_bit3 <= '0';
+            data_out_bit4 <= '0';
+            data_out_bit5 <= '0';
+            data_out_bit6 <= '0';
+            data_out_bit7 <= '0';
             lastState := '0';
             recieve := '0';
             sig_rst_cnt <= '1';
@@ -144,22 +152,23 @@ p_uart_rx : process (clk) is
                         sig_data_out(7) := data_in;
                     when "1001" =>          -- parity
                         parity_in := data_in;
+                    when "1010" =>
+                            data_out_bit0 <= sig_data_out(0);
+                            data_out_bit1 <= sig_data_out(1);
+                            data_out_bit2 <= sig_data_out(2);
+                            data_out_bit3 <= sig_data_out(3);
+                            data_out_bit4 <= sig_data_out(4);
+                            data_out_bit5 <= sig_data_out(5);
+                            data_out_bit6 <= sig_data_out(6);
+                            data_out_bit7 <= sig_data_out(7);      
                     when others =>
-                        sig_rst_cnt <= '1';
                         parity_data := sig_data_out(0) xor sig_data_out(1) xor sig_data_out(2) xor sig_data_out(3) xor sig_data_out(4) xor sig_data_out(5) xor sig_data_out(6) xor sig_data_out(7);
-                        if parity_in = parity_data then
-                            parity <= '1';
-                        end if;
-                        data_out_bit0 <= sig_data_out(0);
-                        data_out_bit1 <= sig_data_out(1);
-                        data_out_bit2 <= sig_data_out(2);
-                        data_out_bit3 <= sig_data_out(3);
-                        data_out_bit4 <= sig_data_out(4);
-                        data_out_bit5 <= sig_data_out(5);
-                        data_out_bit6 <= sig_data_out(6);
-                        data_out_bit7 <= sig_data_out(7);
+                            if parity_in = parity_data then
+                                parity <= '1';
+                            end if;
                         recieve := '0';
                         lastState := '0';
+                        sig_rst_cnt <= '1';
                 end case;       
                 
             end if;
